@@ -78,26 +78,59 @@ var total = 0;
 function buy(id) {
     // 1. Loop for to the array products to get the item to add to cart
     // 2. Add found product to the cart array
-}
+    if (products.some(item => item.id === id)) {
+        let found = products.find(item => item.id === id);
+        if (cart.some(item => item.id === id)) {
+            found.quantity += 1;
+        } else {
+            found.quantity = 1;
+            cart.push(found);
+        }
+    } else {
+        alert('Error: item does not exist.');
+    }
+};
+
 
 // Exercise 2
 function cleanCart() {
-
+    cart.length = 0;
 }
 
 // Exercise 3
 function calculateTotal() {
     // Calculate total price of the cart using the "cartList" array
+    cart.forEach(element => {
+        total += (element.price * element.quantity);
+    });
 }
+
 
 // Exercise 4
 function applyPromotionsCart() {
     // Apply promotions to each item in the array "cart"
+    cart.forEach(element => {
+        if (element.id === 1) {
+            let item = element.offer;
+            if (element.quantity >= item.number) {
+                element.subtotalWithDiscount = ((element.price * element.quantity) - ((element.price * element.quantity) * (item.percent / 100)));
+            }
+        } else if (element.id === 3) {
+            let item = element.offer;
+            if (item.number >= element.quantity) {
+                element.subtotalWithDiscount = ((element.price * element.quantity) - ((element.price * element.quantity) * (item.percent / 100)));
+            }
+        } else {
+            alert('Error: no items with discount.');
+        }
+    });
 }
+
 
 // Exercise 5
 function printCart() {
     // Fill the shopping cart modal manipulating the shopping cart dom
+    
 }
 
 
