@@ -86,6 +86,8 @@ function buy(id) {
             found.quantity = 1;
             cart.push(found);
         }
+        let cartSymbol = document.body.querySelector("#count_product");
+        cartSymbol.textContent = parseInt(cartSymbol.textContent) + 1;
     } else {
         alert('Error: item does not exist.');
     }
@@ -95,21 +97,30 @@ function buy(id) {
 // Exercise 2
 function cleanCart() {
     cart.length = 0;
+    printCart();
+    let cartSymbol = document.body.querySelector("#count_product");
+    cartSymbol.textContent = '0';
 }
 
 // Exercise 3
 function calculateTotal() {
     // Calculate total price of the cart using the "cartList" array
+    total = 0;
     cart.forEach(element => {
-        total += (element.price * element.quantity);
+        if (((element.id === 3) || (element.id === 1)) && (element.subtotalWithDiscount != undefined)) {
+            total += element.subtotalWithDiscount;
+        } else {
+            total += (element.price * element.quantity);
+        }
     });
+    return total;
 }
 
 
 // Exercise 4
-function applyPromotionsCart() {
+function applyPromotionsCart(array) {
     // Apply promotions to each item in the array "cart"
-    cart.forEach(element => {
+    array.forEach(element => {
         if (element.id === 1) {
             let item = element.offer;
             if (element.quantity >= item.number) {
@@ -117,11 +128,10 @@ function applyPromotionsCart() {
             }
         } else if (element.id === 3) {
             let item = element.offer;
-            if (item.number >= element.quantity) {
+            if (element.quantity >= item.number) {
                 element.subtotalWithDiscount = ((element.price * element.quantity) - ((element.price * element.quantity) * (item.percent / 100)));
             }
         } else {
-            alert('Error: no items with discount.');
         }
     });
 }
@@ -130,7 +140,31 @@ function applyPromotionsCart() {
 // Exercise 5
 function printCart() {
     // Fill the shopping cart modal manipulating the shopping cart dom
-    
+    applyPromotionsCart(cart);
+
+    let parent = document.body.querySelector("#cart_list");
+    let cartTotal = document.body.querySelector("#total_price");
+    parent.innerHTML = '';
+
+    cart.forEach(element => {
+        let x = document.createElement("tr");
+        parent.appendChild(x);
+                
+        const row = x.appendChild(document.createElement("th"));
+        row.setAttribute("scope", "row");
+        row.textContent = `${element.name}`.charAt(0).toUpperCase() + `${element.name}`.slice(1);
+
+        x.appendChild(document.createElement("td")).textContent = `$${element.price}`;
+        x.appendChild(document.createElement("td")).textContent = `${element.quantity}`;
+
+        if (((element.id === 3) || (element.id === 1)) && (element.subtotalWithDiscount != undefined)) {
+            x.appendChild(document.createElement("td")).textContent = `$${element.subtotalWithDiscount}`;
+        } else {
+            x.appendChild(document.createElement("td")).textContent = '$' + (`${element.quantity}` * `${element.price}`);
+        }        
+    });
+
+    cartTotal.textContent = calculateTotal();
 }
 
 
