@@ -64,34 +64,26 @@ var products = [
     }
 ]
 
-// => Reminder, it's extremely important that you debug your code. 
-// ** It will save you a lot of time and frustration!
-// ** You'll understand the code better than with console.log(), and you'll also find errors faster. 
-// ** Don't hesitate to seek help from your peers or your mentor if you still struggle with debugging.
+// Global variables
 
-// Improved version of cartList. Cart is an array of products (objects), but each one has a quantity field to define its quantity, so these products are not repeated.
-var cart = [];
+let cart = [];
 
-var total = 0;
+let total = 0;
 
 // Exercise 1
 function buy(id) {
-    // 1. Loop for to the array products to get the item to add to cart
-    // 2. Add found product to the cart array
     if (products.some(item => item.id === id)) {
         let found = products.find(item => item.id === id);
         if (cart.some(item => item.id === id)) {
-            found.quantity += 1;
+            found.quantity = found.quantity + 1;
         } else {
             found.quantity = 1;
             cart.push(found);
         }
         let cartSymbol = document.body.querySelector("#count_product");
         cartSymbol.textContent = parseInt(cartSymbol.textContent) + 1;
-    } else {
-        alert('Error: item does not exist.');
     }
-};
+}
 
 
 // Exercise 2
@@ -102,9 +94,9 @@ function cleanCart() {
     cartSymbol.textContent = '0';
 }
 
+
 // Exercise 3
 function calculateTotal() {
-    // Calculate total price of the cart using the "cartList" array
     total = 0;
     cart.forEach(element => {
         if (((element.id === 3) || (element.id === 1)) && (element.subtotalWithDiscount != undefined)) {
@@ -119,19 +111,14 @@ function calculateTotal() {
 
 // Exercise 4
 function applyPromotionsCart(array) {
-    // Apply promotions to each item in the array "cart"
     array.forEach(element => {
-        if (element.id === 1) {
+        if (element.id === 1 || element.id === 3) {
             let item = element.offer;
             if (element.quantity >= item.number) {
                 element.subtotalWithDiscount = ((element.price * element.quantity) - ((element.price * element.quantity) * (item.percent / 100)));
+            } else {
+                element.subtotalWithDiscount = element.price * element.quantity;
             }
-        } else if (element.id === 3) {
-            let item = element.offer;
-            if (element.quantity >= item.number) {
-                element.subtotalWithDiscount = ((element.price * element.quantity) - ((element.price * element.quantity) * (item.percent / 100)));
-            }
-        } else {
         }
     });
 }
@@ -139,31 +126,51 @@ function applyPromotionsCart(array) {
 
 // Exercise 5
 function printCart() {
-    // Fill the shopping cart modal manipulating the shopping cart dom
     applyPromotionsCart(cart);
 
-    let parent = document.body.querySelector("#cart_list");
+    const parent = document.body.querySelector("#cart_list");
     let cartTotal = document.body.querySelector("#total_price");
     parent.innerHTML = '';
 
     cart.forEach(element => {
-        let x = document.createElement("tr");
-        parent.appendChild(x);
+        const child = document.createElement("tr");
+        parent.appendChild(child);
                 
-        const row = x.appendChild(document.createElement("th"));
+        const row = child.appendChild(document.createElement("th"));
         row.setAttribute("scope", "row");
         row.textContent = `${element.name}`.charAt(0).toUpperCase() + `${element.name}`.slice(1);
 
-        x.appendChild(document.createElement("td")).textContent = `$${element.price}`;
-        x.appendChild(document.createElement("td")).textContent = `${element.quantity}`;
+        child.appendChild(document.createElement("td")).textContent = `$${element.price}`;
+        child.appendChild(document.createElement("td")).textContent = `${element.quantity}`;
 
-        if (((element.id === 3) || (element.id === 1)) && (element.subtotalWithDiscount != undefined)) {
-            x.appendChild(document.createElement("td")).textContent = `$${element.subtotalWithDiscount}`;
+        if (((element.id === 3) || (element.id === 1)) && (element.subtotalWithDiscount != undefined) ) {
+            child.appendChild(document.createElement("td")).textContent = `$${element.subtotalWithDiscount}`;
         } else {
-            x.appendChild(document.createElement("td")).textContent = '$' + (`${element.quantity}` * `${element.price}`);
-        }        
-    });
+            child.appendChild(document.createElement("td")).textContent = '$' + (`${element.quantity}` * `${element.price}`);
+        }
 
+        let buttonPlace = document.createElement("td");
+        child.appendChild(buttonPlace);
+
+        let buttonBuy = document.createElement("buttonBuy");
+        buttonBuy.className = 'buttonManage';
+        buttonBuy.textContent = "+";
+        buttonPlace.appendChild(buttonBuy);
+
+        let buttonSell = document.createElement("buttonSell");
+        buttonSell.className = 'buttonManage';
+        buttonSell.textContent = "-";
+        buttonPlace.appendChild(buttonSell);
+
+        buttonSell.addEventListener('click', ()=>{
+            removeFromCart(element.id);
+            printCart();
+        });
+        buttonBuy.addEventListener('click', ()=>{
+            buy(element.id);
+            printCart();
+        });
+    });
     cartTotal.textContent = calculateTotal();
 }
 
@@ -172,8 +179,21 @@ function printCart() {
 
 // Exercise 7
 function removeFromCart(id) {
+    cart.forEach(element => {
+        if (element.id === id) {
+            element.quantity--
+            if (element.quantity === 0) {
+                const index = cart.indexOf(element);
+                cart.splice(index, 1);
+            }
+        }
+    });
 
+    let cartSymbol = document.body.querySelector("#count_product");
+    cartSymbol.textContent = parseInt(cartSymbol.textContent) - 1;
+    if (cart.length == 0) { cartSymbol.textContent = '0' };
 }
+
 
 function open_modal() {
     printCart();

@@ -10,6 +10,26 @@
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
+
+.buttonManage {
+  display: inline-block;
+  outline: 0;
+  cursor: pointer;
+  overflow: visible;
+  margin-left: 5px;
+  border-radius: 95px;
+  background: #FFD814;
+  border: 1px solid #000000;
+  font-size: 15px;
+  height: 30px;
+  width: 30px;
+  text-align: center;
+  font-weight: 900;
+  padding-right: 0.5px;
+  padding-top: 1.5px;
+  color: #0F1111;
+}
+
 :root {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
