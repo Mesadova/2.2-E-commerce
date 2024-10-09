@@ -30,6 +30,14 @@
   color: #0F1111;
 }
 
+.custom-invalid-feedback {
+  background: red;
+  border: 1px solid #000000;
+  color: white;
+  height: 30px;
+  width: 30px;
+}
+
 :root {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
