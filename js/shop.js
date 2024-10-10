@@ -105,7 +105,7 @@ function calculateTotal() {
             total += (element.price * element.quantity);
         }
     });
-    return total;
+    return total.toFixed(2);
 }
 
 
@@ -146,7 +146,7 @@ function printCart() {
         if (((element.id === 3) || (element.id === 1)) && (element.subtotalWithDiscount != undefined) ) {
             child.appendChild(document.createElement("td")).textContent = `$${element.subtotalWithDiscount}`;
         } else {
-            child.appendChild(document.createElement("td")).textContent = '$' + (`${element.quantity}` * `${element.price}`);
+            child.appendChild(document.createElement("td")).textContent = '$' + (`${element.quantity}` * `${element.price}`).toFixed(2);
         }
 
         let buttonPlace = document.createElement("td");
