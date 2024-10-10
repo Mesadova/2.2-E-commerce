@@ -4,9 +4,10 @@ function validate() {
 	let error = 0;
 	let regEmail = /^([a-zA-Z0-9_\-\.])+\@([a-zA-Z0-9_\-\.])+\.([a-zA-Z]{2,})$/;
 	let regName = /^[a-zA-Z]{3,}$/;
-	let regPhone = /^[0-9]{3,}$/;
+	let regPhone = /^[0-9]{9,9}$/;
 	let regAddress = /^[a-zA-Z0-9]{3,}$/;
 	let regPassword = /^(?=.*?\d)(?=.*?[a-zA-Z])[a-zA-Z\d]{4,}$/;
+	let valid = 0;
 
 	// Get the input fields
 	let fName = document.getElementById("fName");
@@ -15,6 +16,8 @@ function validate() {
 	let fPassword = document.getElementById("fPassword");
 	let fAddress = document.getElementById("fAddress");
 	let fPhone = document.getElementById("fPhone");
+
+	let inputs = [fName, fLastN, fEmail, fPassword, fAddress, fPhone];
 
 	// Get the error elements
 	let errorName = document.getElementById("errorName");
@@ -66,5 +69,11 @@ function validate() {
 	} else {
 		fPassword.className = 'form-control ml-3 is-valid';
 	}
+	inputs.forEach(input => {
+		if (input.className === 'form-control ml-3 is-valid') {valid++};
+	});
 
+	if (valid === 6) {
+		alert('All fields are correct. Checkout done');
+	}
 }
