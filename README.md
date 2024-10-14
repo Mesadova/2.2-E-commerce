@@ -16,7 +16,6 @@ This repository contains the exercise 2.2. E-commerce of the IT Academy Frontend
 
 - HTML5
 - CSS
-- SASS
 - Bootstrap v5.0
 - JavaScript
 
@@ -29,7 +28,7 @@ This repository contains the exercise 2.2. E-commerce of the IT Academy Frontend
 **✔️ Step 1:** Clone the repository:
 
 ```bash
-git clone https://github.com/Mesadova/2.1-Exercicis-Basics-JavaScript.git
+git clone https://github.com/Mesadova/2.2-E-commerce.git
 ```
 
 **✔️ Step 2:** Open the *.js files.
